@@ -8,5 +8,12 @@ export class CdkSampleStack extends cdk.Stack {
     super(scope, id, props);
 
     // The code that defines your stack goes here
+    const queue = new sqs.Queue(this, 'CdkSampleQueue', {
+      visibilityTimeout: cdk.Duration.seconds(300);
+    });
+
+    const topic = new sns.Topic(this, 'CdkSampleTopic');
+
+    topic.addSubscription(new subs.SqsSubscription(queue));
   }
 }
